@@ -18,7 +18,9 @@ class GitHub:
 
        return body
    
-   #індивідуальна робота:
+   #індивідуальна частина:
+
+   #реалізація двох методів згідно API документації GitHub 
 
    def get_emojis(self):
        r = requests.get(f'https://api.github.com/emojis')

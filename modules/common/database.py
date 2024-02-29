@@ -17,12 +17,14 @@ class Database():
         query = "SELECT name, address, city FROM customers"
         self.cursor.execute(query)
         record = self.cursor.fetchall()
+        
         return record
     
     def get_user_address_by_name(self, name):
         query = f"SELECT address, city, postalCode, country FROM customers WHERE name = '{name}'"
         self.cursor.execute(query)
         record = self.cursor.fetchall()
+
         return record
     
     def update_product_qnt_by_id(self, product_id, qnt):
@@ -34,6 +36,7 @@ class Database():
         query = f"SELECT quantity FROM products WHERE id = {product_id}"
         self.cursor.execute(query)
         record = self.cursor.fetchall()
+
         return record
     
     def insert_product(self, product_id, name, description, qnt):
@@ -55,4 +58,28 @@ class Database():
                  JOIN products ON orders.product_id = products.id"
         self.cursor.execute(query)
         record = self.cursor.fetchall()
+
         return record
+    
+    def insert_user(self, user_id, name, address, city, postal_code, country):
+        query = f"INSERT INTO customers (id, name, address, city, postalCode, country) VALUES (?, ?, ?, ?, ?, ?)"
+        values = (user_id, name, address, city, postal_code, country)
+
+        try:
+            self.cursor.execute(query, values)
+            self.connection.commit()
+            print("User inserted successfully")
+            return True  
+        except Exception as e:
+            print(f"Error inserting user: {e}")
+
+            return False
+        
+    def close(self):
+        self.cursor.close()
+        self.connection.close()
+
+    def delete_user_by_id(self, user_id):
+        delete_query = f"DELETE FROM customers WHERE id = {user_id}"
+        self.cursor.execute(delete_query)
+        self.connection.commit()
